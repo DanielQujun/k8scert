@@ -230,9 +230,12 @@ EOF
 seq_num=1
 for master in `cat ${workdir}/master_hosts`
 do
-  sed -i "s/__MASTER${seq_num}/${master}/g" ${workdir}/harbor/harbor.conf
+  sed -i "s/__MASTER${seq_num}__/${master}/g" ${workdir}/harbor/harbor.conf
   ((seq_num++))
 done
+
+# 考虑单节点情况，删除ip
+sed '/__MASTER/d' ${workdir}/harbor/harbor.conf
 
 
 openssl genrsa -out ${harbordir}/harbor.key 2048
